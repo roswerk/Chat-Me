@@ -5,7 +5,7 @@ export default class Chat extends React.Component{
   render(){
     let {name} = this.props.route.params;
     let {backgroundColor} = this.props.route.params;
-    this.props.navigation.setOptions({title: name, backgroundColor: backgroundColor});
+    this.props.navigation.setOptions({title: name});
 
     return(
       <View style={{flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: backgroundColor}}>

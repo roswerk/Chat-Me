@@ -68,7 +68,6 @@ constructor(props){
 {/* Start Chatting button, who takes you to the Chat component and passes name and chatBg props set in this.state */}
 <TouchableOpacity onPress={() => {this.props.navigation.navigate("Chat", {name: this.state.name, backgroundColor: this.state.chatBg} )}} 
 style={styles.chatButton}
-backgroundColor={this.state.chatBg}
 >
   <Text style={styles.buttonText}>Start Chatting</Text>
 </TouchableOpacity>

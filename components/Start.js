@@ -91,6 +91,16 @@ constructor(props){
           accessibilityRole="Button"
           />
 
+          <TouchableOpacity 
+          style={styles.noColor}
+          onPress={()=>{this.setState({chatBg: "#FFFFFF"})}}
+          accessibility={true}
+          accessibilityLabel="Background color light green"
+          accessibilityHint="Lets you change the chat room background color to light green"
+          accessibilityRole="Button"
+          >
+          <Text style={styles.noColorText}>No Color</Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -230,6 +240,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#e7e7e7",
     borderRadius: 20,
     margin: "2%",
+  },
+  noColor: {
+    height: 40,
+    width: 40,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    margin: "2%",
+  },
+  noColorText: {
+    color: "black", 
+    textAlign: "center",
   },
 
 // End of Color Buttons 

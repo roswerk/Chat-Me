@@ -42,6 +42,40 @@ export default class Chat extends React.Component{
   }))
   }
 
+// RenderBubble inherits the props from Bubble and changes the wrapperStyle + 
+// textStyle of the Bubble element on the GiftedChat component
+  renderBubble(props){
+    return(
+      <Bubble
+// Inherit props
+      {...props}
+// Change chats bubble by modifying the wrapperStyle background color
+      wrapperStyle={{
+        // Left bubble
+        left:{
+          backgroundColor: "#610480"
+         },
+// Right bubble
+        right:{
+          backgroundColor: "#610480"
+        }
+      }}
+// Text style of the bubble
+      textStyle={{
+        left:{
+          color: "white",
+          fontWeight: "bold",
+          fontStyle: "italic"
+        },
+        right:{
+          color: "white"
+        }
+      }}
+      />
+    )
+  }
+  
+
   render(){
     let {backgroundColor} = this.props.route.params;
     let {name} = this.props.route.params;
@@ -55,6 +89,8 @@ export default class Chat extends React.Component{
       }
       >
         <GiftedChat 
+// Renders custom bubble
+        renderBubble={this.renderBubble.bind(this)}
 // Renders state messages
         messages={this.state.messages}
 // Appends last sent messages to the current message state and displays all the messages

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Button, TextInput, ImageBackground, StyleSheet, TouchableOpacity, Image} from "react-native";
+import { View, Text, Button, TextInput, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView} from "react-native";
 
 export default class Start extends React.Component{
 
@@ -46,31 +46,65 @@ constructor(props){
 
         <View style={styles.chooseButtons}>
 {/* Buttons with colors, set to change this.state with own color */}
-          <TouchableOpacity style={styles.color1}
+          <TouchableOpacity 
+          style={styles.color1}
           onPress={() => {this.setState({chatBg: "#090C08"})}}
+          accessibility={true}
+          accessibilityLabel="Background color Black"
+          accessibilityHint="Lets you change the chat room background color to black"
+          accessibilityRole="Button"
           />
 
-          <TouchableOpacity style={styles.color2}
+          <TouchableOpacity 
+          style={styles.color2}
           onPress={()=> {this.setState({chatBg: "#474056"})}}
+          accessibility={true}
+          accessibilityLabel="Background color grey"
+          accessibilityHint="Lets you change the chat room background color to grey"
+          accessibilityRole="Button"
           />
 
-          <TouchableOpacity style={styles.color3}
+          <TouchableOpacity 
+          style={styles.color3}
           onPress={() => {this.setState({chatBg: "#8A95A5"})}}
+          accessibility={true}
+          accessibilityLabel="Background color light grey"
+          accessibilityHint="Lets you change the chat room background color to light grey"
+          accessibilityRole="Button"
           />
 
-          <TouchableOpacity style={styles.color4}
+          <TouchableOpacity 
+          style={styles.color4}
           onPress={()=>{this.setState({chatBg: "#B9C6AE"})}}
+          accessibility={true}
+          accessibilityLabel="Background color light green"
+          accessibilityHint="Lets you change the chat room background color to light green"
+          accessibilityRole="Button"
+          />
+          
+          <TouchableOpacity 
+          style={styles.color5}
+          onPress={()=>{this.setState({chatBg: "#e7e7e7"})}}
+          accessibility={true}
+          accessibilityLabel="Background color light white"
+          accessibilityHint="Lets you change the chat room background color to light white"
+          accessibilityRole="Button"
           />
 
         </View>
       </View>
 
 {/* Start Chatting button, who takes you to the Chat component and passes name and chatBg props set in this.state */}
-<TouchableOpacity onPress={() => {this.props.navigation.navigate("Chat", {name: this.state.name, backgroundColor: this.state.chatBg} )}} 
-style={styles.chatButton}
->
-  <Text style={styles.buttonText}>Start Chatting</Text>
-</TouchableOpacity>
+      <TouchableOpacity onPress={() => {this.props.navigation.navigate("Chat", {name: this.state.name, backgroundColor: this.state.chatBg} )}} 
+      style={styles.chatButton}
+      >
+        <Text style={styles.buttonText}
+        accessible={true}
+        accessibilityLabel="Start Chatting"
+        accessibilityHint="Redirects you to the chat room"
+        accessibilityRole="Button"
+        >Start Chatting</Text>
+      </TouchableOpacity>
         </View>
       </View>
 
@@ -108,7 +142,7 @@ const styles = StyleSheet.create({
     width: "88%",
     backgroundColor: "white",
     alignSelf: "center",
-    marginBottom: "8%"
+    marginBottom: "8%",
   },
 
 // Start of the your name elements
@@ -189,6 +223,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#B9C6AE",
     borderRadius: 20,
     margin: "2%"
+  },
+  color5: {
+    height: 40,
+    width: 40,
+    backgroundColor: "#e7e7e7",
+    borderRadius: 20,
+    margin: "2%",
   },
 
 // End of Color Buttons 

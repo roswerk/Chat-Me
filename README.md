@@ -1,6 +1,5 @@
 # Chat-Me
-This is a basic Chat-App built with React-Native and Expo.
-The chat's UI is created with GiftedChat. 
+This is a basic Chat-App built with React-Native and Expo. The chat's UI is created with GiftedChat. 
 
 ## Key Features
 

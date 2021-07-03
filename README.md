@@ -41,4 +41,4 @@ reader so that I can engage with a chat interface.
 
 - React-Native
 - React-Navigation/Native
-- react-native-gifted-chat
+- React-native-gifted-chat

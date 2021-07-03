@@ -10,6 +10,7 @@ export default class Chat extends React.Component{
     return(
       <View style={{flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: backgroundColor}}>
         
+        {Platform.OS === "android" ? <KeyboardAvoidingView behavior="height" /> : null}
       </View>
     )
   }

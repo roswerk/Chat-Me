@@ -119,6 +119,7 @@ constructor(props){
       </View>
 
 </ImageBackground>
+{Platform.OS === "android" ? <KeyboardAvoidingView behavior="height" /> : null}
       </View>
     )
   }

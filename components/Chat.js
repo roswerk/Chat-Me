@@ -4,6 +4,21 @@ import { View, StyleSheet, Platform, KeyboardAvoidingView, Button, Text } from "
 // Import GiftedChat library 
 import { GiftedChat, Bubble } from "react-native-gifted-chat";
 
+const firebase = require("firebase");
+require("firebase/firestore");
+
+  // The web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyAQWTab2CjGlRZO2S24gZWWmvpZmMA6xLs",
+    authDomain: "testingfirebase2021.firebaseapp.com",
+    projectId: "testingfirebase2021",
+    storageBucket: "testingfirebase2021.appspot.com",
+    messagingSenderId: "204180526729",
+    appId: "1:204180526729:web:e0c2400b33ae7c08fb9858",
+    measurementId: "G-H4SPVCC54N"
+  };
+
 export default class Chat extends React.Component{
 
   constructor(){
@@ -12,6 +27,25 @@ export default class Chat extends React.Component{
     this.state = {
       messages: [],
     }
+
+  // Initialize Firebase
+  if (!firebase.apps.length){
+    firebase.initializeApp(firebaseConfig);
+    }
+  // firebase.analytics();
+
+  }
+
+
+  addMessage(){
+    const message = this.state.messages[0];
+
+    this.referenceChatMessages.add({
+      _id: message._id,
+      text: message.text || null,
+      createdAt: message.createdAt,
+      user: message.user,
+    })
   }
 
   componentDidMount(){

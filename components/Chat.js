@@ -140,6 +140,7 @@ export default class Chat extends React.Component{
   // Stop receiving updates about a collection
   componentWillUnmount() {
     this.unsubscribe();
+    this.authUnsubscribe();
  }
 
 

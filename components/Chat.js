@@ -87,6 +87,29 @@ export default class Chat extends React.Component{
 
 
   componentDidMount(){
+
+    this.authUnsubscribe = firebase.auth().onAuthStateChanged(async(user) => {
+
+      if(!user){
+        await firebase.auth().signInAnonymously();
+      }
+      // update user state with currently active user data
+      this.setState({
+        uid: user.uid,
+        messages: [],
+        user:{
+          _id: user.uid,
+          name: user.name,
+          avatar: "https://placeimg.com/139/139/any"
+        },
+      });
+
+      this.unsubscribe = this.referenceChatMessages
+      .orderBy("createdAt", "desc")
+      .onSnapshot(this.onCollectionUpdate);
+    })
+
+
     // Listen for updates in  collection using Firestore’s onSnapshot() function.
     this.referenceChatMessages = firebase
     .firestore()

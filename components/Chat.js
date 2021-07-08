@@ -126,6 +126,13 @@ export default class Chat extends React.Component{
     messages: GiftedChat.append(previousState.messages, messages),
   }))
   }
+  }),
+  () => {
+    // onSend calls addMessages and includes it to DB and messages state
+    this.addMessages();
+  },
+  );
+  };
 
 // RenderBubble inherits the props from Bubble and changes the wrapperStyle + 
 // textStyle of the Bubble element on the GiftedChat component

@@ -36,6 +36,7 @@ export default class Chat extends React.Component{
     }
   // firebase.analytics();
 
+  this.referenceChatMessages = firebase.firestore().collection("messages");
   }
 
 

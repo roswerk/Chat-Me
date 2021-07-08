@@ -48,7 +48,38 @@ export default class Chat extends React.Component{
     })
   }
 
+
+
+  onCollectionUpdate = (querySnapshot) => {
+    const messages = [];
+    // go through each document
+    querySnapshot.forEach((doc) => {
+      // get the QueryDocumentSnapshot's data
+      let data = doc.data();
+      messages.push({
+        _id: data._id,
+        text: data.text,
+        createdAt: data.createdAt.toDate(),
+        user: data.user,
+      });
+    });
+
+    this.setState({
+      messages,
+    });
+
+  }
+
+
+
   componentDidMount(){
+    // Listen for updates in  collection using Firestore’s onSnapshot() function.
+    this.referenceChatMessages = firebase
+    .firestore()
+    .collection("messages");
+
+    this.unsubscribe = this.referenceChatMessages.onSnapshot(this.onCollectionUpdate);
+
     this.setState({
       messages: [{
         _id: 1,
@@ -68,6 +99,12 @@ export default class Chat extends React.Component{
     ],
     })
   }
+
+  // Stop receiving updates about a collection
+  componentWillUnmount() {
+    this.unsubscribe();
+ }
+
 
 // Function that appends the last message to the message state annd returns all messages
   onSend(messages = []){

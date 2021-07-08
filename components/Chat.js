@@ -26,6 +26,8 @@ export default class Chat extends React.Component{
   
     this.state = {
       messages: [],
+      uid: 0,
+
     }
 
   // Initialize Firebase

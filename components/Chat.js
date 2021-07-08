@@ -38,20 +38,7 @@ export default class Chat extends React.Component{
 
   this.referenceChatMessages = firebase.firestore().collection("messages");
   }
-
-
-  addMessage(){
-    const message = this.state.messages[0];
-
-    this.referenceChatMessages.add({
-      _id: message._id,
-      text: message.text || null,
-      createdAt: message.createdAt,
-      user: message.user,
-    })
-  }
-
-
+  
 
   onCollectionUpdate = (querySnapshot) => {
     const messages = [];
@@ -66,11 +53,9 @@ export default class Chat extends React.Component{
         user: data.user,
       });
     });
-
     this.setState({
       messages,
-    });
-
+    })
   }
 
    // Add messages to the state and DB
@@ -119,25 +104,6 @@ export default class Chat extends React.Component{
     .collection("messages");
 
     this.unsubscribe = this.referenceChatMessages.onSnapshot(this.onCollectionUpdate);
-
-    this.setState({
-      messages: [{
-        _id: 1,
-        text: `Welcome ${this.props.route.params.name}, we were waiting you`,
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-      {_id: 2,
-        text: `${this.props.route.params.name} has entered the chatroom`,
-        createdAt: new Date(),
-        system: true,
-      },
-    ],
-    })
   }
 
   // Stop receiving updates about a collection
@@ -151,14 +117,11 @@ export default class Chat extends React.Component{
   onSend(messages = []){
   this.setState(previousState => ({
     messages: GiftedChat.append(previousState.messages, messages),
-  }))
-  }
   }),
   () => {
     // onSend calls addMessages and includes it to DB and messages state
     this.addMessages();
-  },
-  );
+  },);
   };
 
 // RenderBubble inherits the props from Bubble and changes the wrapperStyle + 
@@ -234,6 +197,4 @@ const styles = StyleSheet.create({
     flex:1, 
     // backgroundColor: `${props.route.params.chatBg}`
   }
-})
-
-// backgroundColor: backgroundColor
+});

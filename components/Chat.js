@@ -70,6 +70,20 @@ export default class Chat extends React.Component{
 
   }
 
+   // Add messages to the state and DB
+ addMessages(){
+  // Appends message info to the messages state
+  const message = this.state.messages[0];
+
+  // Adds message information to the firestore DB
+  this.referenceChatMessages.add({
+    _id: message._id,
+    text: message.text || null,
+    createdAt: message.createdAt,
+    user: message.user,
+  })
+}
+
 
 
   componentDidMount(){

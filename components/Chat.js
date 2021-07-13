@@ -129,7 +129,17 @@ This is the approach used for Firestore DB
 
 
 
+// This approach is for AsyncStorage. 
+//It saves the messages in the Apps client storage
 
+async saveMessages(){
+  try{
+   await AsyncStorage.setItem("messages", JSON.stringify(this.state.messages)); 
+   console.log(this.state.messages)
+  } catch(error){
+   console.log(error.message)
+  }
+}
 
 // This function is for AsyncStorage testing. 
 //It retrieves the messages
@@ -138,7 +148,6 @@ async getMessages(){
 
   try{
   messages = await AsyncStorage.getItem("messages") || []
-
   this.setState({
     messages: JSON.parse(messages)
   });
@@ -147,18 +156,6 @@ async getMessages(){
   };
 };
 
-
-
-// This approach is for AsyncStorage. 
-//It saves the messages in the Apps client storage
-
- async saveMessages(){
-   try{
-    await AsyncStorage.setItem("messages", JSON.stringify(this.state.messages)); 
-   } catch(error){
-    console.log(error.message)
-   }
- }
 
 // This function is for AsyncStorage testing. 
 //It removes the messages. Only for dev purposes
@@ -178,24 +175,68 @@ try{
 componentDidMount(){
 
   NetInfo.fetch().then(connection => {
+
     if(connection.isConnected){
-      console.log("Online");
+      console.log("Online Mount");
+
+    this.authUnsubscribe = firebase.auth().onAuthStateChanged(async(user) => {
+
+      if(!user){
+        await firebase.auth().signInAnonymously();
+      }
+      // update user state with currently active user data
+      this.setState({
+        uid: user.uid,
+        messages: [],
+        user:{
+          _id: user.uid,
+          name: user.name,
+          avatar: "https://placeimg.com/139/139/any"
+        },
+        isConnected: true
+      });
+
+      this.unsubscribe = this.referenceChatMessages
+      .orderBy("createdAt", "desc")
+      .onSnapshot(this.onCollectionUpdate);
+    })
+
+
+    // Listen for updates in  collection using Firestore’s onSnapshot() function.
+    this.referenceChatMessages = firebase
+    .firestore()
+    .collection("messages");
+
+    this.unsubscribe = this.referenceChatMessages.onSnapshot(this.onCollectionUpdate);
     }
     else{
-      console.log("Offline");
+      console.log("Offline Mount");
+      this.getMessages();
     }
   })
-
-
-  this.getMessages();
 }
 
 // This approach is for AsyncStorage. 
 //It removes the messages. Only for dev purposes
   componentWillUnmount() {
+    NetInfo.fetch().then(connection => {
+      
+      if(connection.isConnected){
+        console.log("Online Umount");
+// Stop receiving updates about a collection
+    this.unsubscribe();
+    this.authUnsubscribe();
+      }
+      
+      else{
+        console.log("Offline Umount");
 // Deletes messages saved on local storage
-  this.deleteMessages();
- }
+
+// Not needed atm
+  // this.deleteMessages();
+}
+ })
+};
 
 
 // Function that appends the last message to the message state annd returns all messages
@@ -204,9 +245,8 @@ componentDidMount(){
     messages: GiftedChat.append(previousState.messages, messages),
   }),
   () => {
-    // onSend calls addMessages and includes it to DB and messages state
-    // this.addMessages();
-
+    // addMessages includes messages to DB and messages state
+    this.addMessages();
     // saveMessages saves the messages in the AsyncStore
     this.saveMessages();
   },);
@@ -249,8 +289,6 @@ componentDidMount(){
       />
     )
   }
-
-  // Dissable the input bar when user is offline
 
   // Render the inputToolbar when the user is online
   renderInputToolbar(props){

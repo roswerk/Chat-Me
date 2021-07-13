@@ -1,6 +1,10 @@
 import React from "react";
 import { View, StyleSheet, Platform, KeyboardAvoidingView, Button, Text } from "react-native";
 
+// Importing NetInfo a package that helps checking if a user is online/offline.
+// Returns an object with a boolean property called isConnnected 
+import NetInfo from "@react-native-community/netinfo";
+
 // Import GiftedChat library 
 import { GiftedChat, Bubble } from "react-native-gifted-chat";
 
@@ -107,6 +111,20 @@ export default class Chat extends React.Component{
   }
 
   // Stop receiving updates about a collection
+componentDidMount(){
+
+  NetInfo.fetch().then(connection => {
+    if(connection.isConnected){
+      console.log("Online");
+    }
+    else{
+      console.log("Offline");
+    }
+  })
+
+
+  this.getMessages();
+}
   componentWillUnmount() {
     this.unsubscribe();
     this.authUnsubscribe();

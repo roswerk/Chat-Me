@@ -9,7 +9,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from "@react-native-community/netinfo";
 
 // Import GiftedChat library 
-import { GiftedChat, Bubble } from "react-native-gifted-chat";
+import { GiftedChat, Bubble, InputToolbar } from "react-native-gifted-chat";
 
 // Importing Firebase 
 const firebase = require("firebase");
@@ -35,6 +35,7 @@ export default class Chat extends React.Component{
     this.state = {
       messages: [],
       uid: 0,
+      isConnected: false
 
     }
 
@@ -251,9 +252,10 @@ componentDidMount(){
 
   // Dissable the input bar when user is offline
 
+  // Render the inputToolbar when the user is online
   renderInputToolbar(props){
     if (this.state.isConnected == false){
-    
+      
     } else{
       return(
         <InputToolbar
@@ -284,6 +286,8 @@ componentDidMount(){
         renderBubble={this.renderBubble.bind(this)}
 // Renders state messages
         messages={this.state.messages}
+// Disables rendering of input field when user is offline
+        renderInputToolbar={this.renderInputToolbar.bind(this)}        
 // Appends last sent messages to the current message state and displays all the messages
         onSend={messages => this.onSend(messages)}
         user={{

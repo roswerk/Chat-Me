@@ -1,6 +1,9 @@
 import React from "react";
 import { View, StyleSheet, Platform, KeyboardAvoidingView, Button, Text } from "react-native";
 
+// Local Storage on React Native
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 // Importing NetInfo a package that helps checking if a user is online/offline.
 // Returns an object with a boolean property called isConnnected 
 import NetInfo from "@react-native-community/netinfo";
@@ -8,6 +11,7 @@ import NetInfo from "@react-native-community/netinfo";
 // Import GiftedChat library 
 import { GiftedChat, Bubble } from "react-native-gifted-chat";
 
+// Importing Firebase 
 const firebase = require("firebase");
 require("firebase/firestore");
 
@@ -38,7 +42,6 @@ export default class Chat extends React.Component{
   if (!firebase.apps.length){
     firebase.initializeApp(firebaseConfig);
     }
-  // firebase.analytics();
 
   this.referenceChatMessages = firebase.firestore().collection("messages");
   }
@@ -76,8 +79,8 @@ export default class Chat extends React.Component{
   })
 }
 
-
-
+/*
+This is the approach used for Firestore DB
   componentDidMount(){
 
     this.authUnsubscribe = firebase.auth().onAuthStateChanged(async(user) => {
@@ -110,7 +113,67 @@ export default class Chat extends React.Component{
     this.unsubscribe = this.referenceChatMessages.onSnapshot(this.onCollectionUpdate);
   }
 
-  // Stop receiving updates about a collection
+*/
+
+// This is the approach used for Firestore DB
+
+// Stop receiving updates about a collection
+//   componentWillUnmount() {
+//     this.unsubscribe();
+//     this.authUnsubscribe();
+//  }
+
+
+
+
+
+
+
+
+// This function is for AsyncStorage testing. 
+//It retrieves the messages
+async getMessages(){
+  let messages = "";
+
+  try{
+  messages = await AsyncStorage.getItem("messages") || []
+
+  this.setState({
+    messages: JSON.parse(messages)
+  });
+  } catch(error){
+    console.log(error.message)
+  };
+};
+
+
+
+// This approach is for AsyncStorage. 
+//It saves the messages in the Apps client storage
+
+ async saveMessages(){
+   try{
+    await AsyncStorage.setItem("messages", JSON.stringify(this.state.messages)); 
+   } catch(error){
+    console.log(error.message)
+   }
+ }
+
+// This function is for AsyncStorage testing. 
+//It removes the messages. Only for dev purposes
+
+async deleteMessages(){
+try{
+  await AsyncStorage.removeItem("messages");
+  this.setState({
+    messages: []
+  })
+} catch(error){
+  console.log(error.message)
+}
+};
+
+
 componentDidMount(){
 
   NetInfo.fetch().then(connection => {
@@ -125,9 +188,12 @@ componentDidMount(){
 
   this.getMessages();
 }
+
+// This approach is for AsyncStorage. 
+//It removes the messages. Only for dev purposes
   componentWillUnmount() {
-    this.unsubscribe();
-    this.authUnsubscribe();
+// Deletes messages saved on local storage
+  this.deleteMessages();
  }
 
 
@@ -138,9 +204,17 @@ componentDidMount(){
   }),
   () => {
     // onSend calls addMessages and includes it to DB and messages state
-    this.addMessages();
+    // this.addMessages();
+
+    // saveMessages saves the messages in the AsyncStore
+    this.saveMessages();
   },);
   };
+
+
+
+
+
 
 // RenderBubble inherits the props from Bubble and changes the wrapperStyle + 
 // textStyle of the Bubble element on the GiftedChat component
@@ -174,7 +248,24 @@ componentDidMount(){
       />
     )
   }
+
+  // Dissable the input bar when user is offline
+
+  renderInputToolbar(props){
+    if (this.state.isConnected == false){
+    
+    } else{
+      return(
+        <InputToolbar
+        {...props}
+        />
+      );
+    }
+  }
   
+
+
+
 
   render(){
     let {backgroundColor} = this.props.route.params;
@@ -213,6 +304,5 @@ Else, does nothing */}
 const styles = StyleSheet.create({
   mainChat: {
     flex:1, 
-    // backgroundColor: `${props.route.params.chatBg}`
-  }
+  },
 });

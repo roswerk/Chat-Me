@@ -33,7 +33,7 @@ try{
     if(!result.cancelled){
       // This is for DB
       const imageUrl = await this.uploadImageFetch(result.uri);
-      this.props.onSend({image: result.uri})
+      this.props.onSend({image: imageUrl})
     }
   }
 }
@@ -46,7 +46,7 @@ catch(error){
 // Open's camara and send a picture 
 takePhoto = async() => {
 
-  const {status} = await Permissions.askAsync(Permissions.CAMERA);
+  const {status} = await Permissions.askAsync(Permissions.CAMERA,  Permissions.MEDIA_LIBRARY);
 
 try{
   if(status === "granted"){
@@ -56,7 +56,7 @@ try{
 
     if(!result.cancelled){
       const imageUrl = await this.uploadImageFetch(result.uri);
-      this.props.onSend({image: result.uri})
+      this.props.onSend({image: imageUrl})
     }
   }
 }

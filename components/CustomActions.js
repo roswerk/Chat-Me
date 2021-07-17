@@ -1,8 +1,9 @@
-import { styleSheets } from "min-document";
-import React from "react";
-import { Component} from "react";
+import React, { Component} from "react";
 import {TouchableOpacity, StyleSheet, Text, View} from "react-native";
 
+// PropTypes ensures that a component use the correct data type and 
+// passes the right data, and that components use the right type of props, 
+// and that receiving components receive the right type of props
 import PropTypes from "prop-types";
 
 // Expo hardward manipulation APIs
@@ -10,10 +11,13 @@ import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
 
+// Import Firebase
+import firebase from "firebase";
 
 export default class CustomActions extends Component{
 
 
+// ====================== Start of CustomAction Functions  
 
 // Send a Image from Library 
 imagePicker = async() => {
@@ -28,7 +32,7 @@ try{
 
     if(!result.cancelled){
       // This is for DB
-      // const imageUrl = await this.uploadImageFetch(result.uri);
+      const imageUrl = await this.uploadImageFetch(result.uri);
       this.props.onSend({image: result.uri})
     }
   }
@@ -51,9 +55,8 @@ try{
     }).catch((error) => console.log(error));
 
     if(!result.cancelled){
-      this.setState({
-        image: result
-      })
+      const imageUrl = await this.uploadImageFetch(result.uri);
+      this.props.onSend({image: result.uri})
     }
   }
 }
@@ -91,8 +94,47 @@ try{
 }
 
 
+// ====================== End of CustomAction Functions  
 
-// CustomActions elements
+// Uploading images to Firebase storage
+uploadImageFetch = async (uri) => {
+
+// Creates our own XMLHttpRequest
+  const blob = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function (){
+      resolve(xhr.response);
+    };
+    xhr.onerror = function (e){
+      console.log(e);
+      reject(new TypeError("Network request failed"));
+    };
+    xhr.responseType = "blob";
+    xhr.open("GET", uri, true);
+    xhr.send(null);
+  });
+
+
+  const imageNameBefore = uri.split("/");
+  const imageName = imageNameBefore[imageNameBefore.length -1];
+
+// Creates a reference to the storage and use PUT to store the content 
+// retrieved from the Ajax request
+  const ref = firebase.storage().ref().child(`images/${imageName}`);
+  const snapshot = await ref.put(blob);
+
+// Closes the connection
+  blob.close();
+
+  return await snapshot.ref.getDownloadURL();
+}
+
+
+
+
+
+
+// CustomActions Functions grouped on a wrapper
     onActionPress = () => {
     const options = ["Chose from Library", "Take Picture", "Send Location", "Cancel"];
     const cancelButtonIndex = options.length -1;
@@ -117,6 +159,7 @@ try{
     },
     );
   };
+
 
 
 

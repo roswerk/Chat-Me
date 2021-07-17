@@ -9,7 +9,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from "@react-native-community/netinfo";
 
 // Import GiftedChat library 
-import { GiftedChat, Bubble, InputToolbar } from "react-native-gifted-chat";
+import { GiftedChat, Bubble, InputToolbar} from "react-native-gifted-chat";
+// Import Custom Actions for GiftedChat
+import CustomActions from "./CustomActions";
+
 // Import MapView 
 import MapView from "react-native-maps";
 
@@ -37,8 +40,8 @@ export default class Chat extends React.Component{
     this.state = {
       messages: [],
       uid: 0,
-      isConnected: false
-
+      isConnected: false,
+      image: null,
     }
 
   // Initialize Firebase
@@ -61,6 +64,7 @@ export default class Chat extends React.Component{
         text: data.text,
         createdAt: data.createdAt.toDate(),
         user: data.user,
+        image: data.image || null,
         location: data.location || null,
       });
     });
@@ -80,6 +84,7 @@ export default class Chat extends React.Component{
     text: message.text || null,
     createdAt: message.createdAt,
     user: message.user,
+    image: message.image || null,
     location: message.location || null, 
   })
 }
@@ -132,10 +137,7 @@ This is the approach used for Firestore DB
 
 
 
-
-// This approach is for AsyncStorage. 
 //It saves the messages in the Apps client storage
-
 async saveMessages(){
   try{
    await AsyncStorage.setItem("messages", JSON.stringify(this.state.messages)); 
@@ -145,8 +147,7 @@ async saveMessages(){
   }
 }
 
-// This function is for AsyncStorage testing. 
-//It retrieves the messages
+//Retrieves the AsyncStored messages
 async getMessages(){
   let messages = "";
 
@@ -161,9 +162,7 @@ async getMessages(){
 };
 
 
-// This function is for AsyncStorage testing. 
 //It removes the messages. Only for dev purposes
-
 async deleteMessages(){
 try{
   await AsyncStorage.removeItem("messages");
@@ -192,11 +191,12 @@ componentDidMount(){
       this.setState({
         uid: user.uid,
         messages: [],
-        user:{
-          _id: user.uid,
-          name: user.name,
-          avatar: "https://placeimg.com/139/139/any"
-        },
+        // Doesnt seem necessary leave it there in case something breaks afterwards
+        // user:{
+        //   _id: user.uid,
+        //   name: user.name,
+        //   avatar: "https://placeimg.com/139/139/any"
+        // },
         isConnected: true
       });
 
@@ -237,7 +237,7 @@ componentDidMount(){
 // Deletes messages saved on local storage
 
 // Not needed atm
-  // this.deleteMessages();
+  this.deleteMessages();
 }
  })
 };
@@ -290,6 +290,8 @@ componentDidMount(){
           color: "white"
         }
       }}
+      
+
       />
     )
   }
@@ -306,6 +308,11 @@ componentDidMount(){
       );
     }
   }
+
+// Creates a + sign to include all the additional functions (aka pick Image, open camara and send location)
+  renderCustomActions = (props) => {
+    return <CustomActions {...props} />;
+  };
   
 
   renderCustomView(props){
@@ -354,8 +361,12 @@ componentDidMount(){
         user={{
           _id: 1,
         }}
+// Prop to customize the integration of aditional features (aka send pics, open camara and send location)
+        renderActions={this.renderCustomActions}
         renderCustomView={this.renderCustomView}
         />
+
+      
 
 {/* JSX conditional expression that checks if the device OS is android, if yes, sets 
 keyboard behavior to height preventing the keyboard to obstruct the input field. 

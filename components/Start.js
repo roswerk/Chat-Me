@@ -16,7 +16,8 @@ constructor(props){
       <View style={styles.container}>
 {/* Background image */}
         <ImageBackground 
-        source={require ("../resources/ChatMe-bg.png")}
+        // source={require ("../resources/ChatMe-bg.png")}
+        source={require ("../resources/peps3.jpeg")}
         style={styles.imgBackg}
         >
 {/* Title */}
@@ -140,7 +141,7 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     flexDirection: "row",
-    fontSize: 45, 
+    fontSize: 55, 
     fontWeight: "600", 
     color: "#FFFFFF",
     alignSelf: "center",

@@ -17,6 +17,15 @@ constructor(props){
 {/* Background image */}
         <ImageBackground 
         source={require ("../resources/ChatMe-bg.png")}
+        // source={require ("../assets/img/city.jpeg")} // Like
+        // source={require ("../assets/img/clock.jpeg")} // Need other title color
+        // source={require ("../assets/img/corp.jpeg")} // clean
+        // source={require ("../assets/img/ice.jpeg")} // cool asw
+        // source={require ("../assets/img/matrix.jpeg")} ==> choice for programers
+        // source={require ("../assets/img/plant1.jpeg")} // clean asw
+        // source={require ("../assets/img/pyramid2.jpeg")} ==> dont like either 1 nor 2
+        // source={require ("../assets/img/sea.jpeg")} ==> kind of cool
+        // source={require ("../assets/img/sunset.jpeg")} ==> Cool
         style={styles.imgBackg}
         >
 {/* Title */}
@@ -144,7 +153,7 @@ const styles = StyleSheet.create({
     fontWeight: "600", 
     color: "#FFFFFF",
     alignSelf: "center",
-    marginVertical: 70
+    marginVertical: 70,
   },
 
   boxContainer:{

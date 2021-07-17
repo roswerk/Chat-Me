@@ -108,6 +108,10 @@ constructor(props){
 {/* Start Chatting button, who takes you to the Chat component and passes name and chatBg props set in this.state */}
       <TouchableOpacity onPress={() => {this.props.navigation.navigate("Chat", {name: this.state.name, backgroundColor: this.state.chatBg} )}} 
       style={styles.chatButton}
+      accessible={true}
+      accessibilityLabel="Start Chatting"
+      accessibilityHint="Redirects you to the chat room"
+      accessibilityRole="Button"
       >
         <Text style={styles.buttonText}
         accessible={true}
@@ -115,6 +119,7 @@ constructor(props){
         accessibilityHint="Redirects you to the chat room"
         accessibilityRole="Button"
         >Start Chatting</Text>
+        <Text style={styles.buttonText}>Start Chatting</Text>
       </TouchableOpacity>
         </View>
       </View>

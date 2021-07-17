@@ -252,11 +252,11 @@ try{
       wrapperStyle={{
         // Left bubble
         left:{
-          backgroundColor: "#610480"
+          backgroundColor: "#757083"
          },
 // Right bubble
         right:{
-          backgroundColor: "#610480"
+          backgroundColor: "#757083"
         }
       }}
 // Text style of the bubble

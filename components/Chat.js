@@ -10,6 +10,8 @@ import NetInfo from "@react-native-community/netinfo";
 
 // Import GiftedChat library 
 import { GiftedChat, Bubble, InputToolbar } from "react-native-gifted-chat";
+// Import MapView 
+import MapView from "react-native-maps";
 
 // Importing Firebase 
 const firebase = require("firebase");
@@ -59,6 +61,7 @@ export default class Chat extends React.Component{
         text: data.text,
         createdAt: data.createdAt.toDate(),
         user: data.user,
+        location: data.location || null,
       });
     });
     this.setState({
@@ -77,6 +80,7 @@ export default class Chat extends React.Component{
     text: message.text || null,
     createdAt: message.createdAt,
     user: message.user,
+    location: message.location || null, 
   })
 }
 
@@ -304,6 +308,25 @@ componentDidMount(){
   }
   
 
+  renderCustomView(props){
+    const {currentMessage} = props;
+
+    if(currentMessage.location){
+      return(
+        <MapView
+        style={styles.customView}
+        region={{
+          latitude: currentMessage.location.latitude,
+          longitude: currentMessage.location.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.421
+        }}
+        />
+      )
+    }
+    return null
+  }
+
 
 
 
@@ -331,6 +354,7 @@ componentDidMount(){
         user={{
           _id: 1,
         }}
+        renderCustomView={this.renderCustomView}
         />
 
 {/* JSX conditional expression that checks if the device OS is android, if yes, sets 
@@ -347,4 +371,10 @@ const styles = StyleSheet.create({
   mainChat: {
     flex:1, 
   },
+  customView:{
+    width: 150,
+    height: 100,
+    borderRadius: 13,
+    margin: 3
+  }
 });

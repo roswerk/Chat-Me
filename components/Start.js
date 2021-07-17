@@ -99,6 +99,7 @@ constructor(props){
           accessibilityHint="Lets you change the chat room background color to light green"
           accessibilityRole="Button"
           >
+
           <Text style={styles.noColorText}>No Color</Text>
           </TouchableOpacity>
         </View>
@@ -202,49 +203,50 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     margin: "2%",
-    marginBottom: "10%"
+    marginBottom: "10%",
+    alignSelf: "center"
   },
 
 // Color Buttons 
 
   color1: {
-    height: 40,
-    width: 40,
+    height: 37,
+    width: 37,
     backgroundColor: "#090C08",
     borderRadius: 20,
     margin: "2%"
   },
   color2: {
-    height: 40,
-    width: 40,
+    height: 37,
+    width: 37,
     backgroundColor: "#474056",
     borderRadius: 20,
     margin: "2%"
   },
   color3: {
-    height: 40,
-    width: 40,
+    height: 37,
+    width: 37,
     backgroundColor: "#8A95A5",
     borderRadius: 20,
     margin: "2%"
   },
   color4: {
-    height: 40,
-    width: 40,
+    height: 37,
+    width: 37,
     backgroundColor: "#B9C6AE",
     borderRadius: 20,
     margin: "2%"
   },
   color5: {
-    height: 40,
-    width: 40,
+    height: 37,
+    width: 37,
     backgroundColor: "#e7e7e7",
     borderRadius: 20,
     margin: "2%",
   },
   noColor: {
-    height: 40,
-    width: 40,
+    height: 37,
+    width: 37,
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
     margin: "2%",

@@ -113,12 +113,6 @@ constructor(props){
       accessibilityHint="Redirects you to the chat room"
       accessibilityRole="Button"
       >
-        <Text style={styles.buttonText}
-        accessible={true}
-        accessibilityLabel="Start Chatting"
-        accessibilityHint="Redirects you to the chat room"
-        accessibilityRole="Button"
-        >Start Chatting</Text>
         <Text style={styles.buttonText}>Start Chatting</Text>
       </TouchableOpacity>
         </View>

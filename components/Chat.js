@@ -136,6 +136,7 @@ This is the approach used for Firestore DB
 
 
 
+// ========= AsyncStorage Functions
 
 //It saves the messages in the Apps client storage
 async saveMessages(){
@@ -173,6 +174,9 @@ try{
   console.log(error.message)
 }
 };
+
+
+// ========= End of AsyncStorage Functions
 
 
 componentDidMount(){
@@ -261,6 +265,10 @@ componentDidMount(){
 
 
 
+
+// ====== Start of Customizing GiftedChat components 
+
+
 // RenderBubble inherits the props from Bubble and changes the wrapperStyle + 
 // textStyle of the Bubble element on the GiftedChat component
   renderBubble(props){
@@ -333,6 +341,8 @@ componentDidMount(){
     }
     return null
   }
+
+// ====== End of Customizing GiftedChat components 
 
 
 
